@@ -10,7 +10,7 @@ const userController = require('../controllers/user-controller')
 const commentController = require('../controllers/​​comment-controller')
 
 router.use('/admin', authenticatedAdmin, admin)
-router.use('/users', authenticatedAdmin, users)
+router.use('/users', authenticated, users)
 
 router.get('/signup', userController.signUpPage)
 router.post('/signup', userController.signUp)
@@ -32,7 +32,7 @@ router.delete('/favorite/:restaurantId', authenticated, userController.removeFav
 router.post('/like/:restaurantId', authenticated, userController.addLike)
 router.delete('/like/:restaurantId', authenticated, userController.removeLike)
 
-router.use('/', generalErrorHandler)
 router.use('/', (req, res) => res.redirect('/restaurants'))
+router.use('/', generalErrorHandler)
 
 module.exports = router
