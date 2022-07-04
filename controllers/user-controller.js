@@ -38,10 +38,19 @@ const userController = {
   getUser: async (req, res, next) => {
     try {
       const id = req.params.id
-      let user = await User.findByPk(id, { nest: true, include: [{ model: Comment, include: Restaurant }] })
+      let user = await User.findByPk(id, {
+        nest: true,
+        include: [
+          { model: Comment, include: Restaurant },
+          { model: Restaurant, as: 'FavoritedRestaurants' },
+          { model: User, as: 'Followings' },
+          { model: User, as: 'Followers' }
+        ]
+      })
       if (!user) throw new Error('使用者不存在！')
       user = await user.toJSON()
-      return res.render('users/profile', { user })
+      user.isFollowed = req.user.Followings.some(following => following.id === user.id)
+      return res.render('users/profile', { userProfile: user })
     } catch (error) {
       next(error)
     }

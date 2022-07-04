@@ -2,7 +2,7 @@
   <div class="col-md-4 align-self-center">
     <img
       class="img-responsive center-block mb-5 mx-auto"
-      src="{{user.image}}"
+      src="{{userProfile.image}}"
       style="width: 250px; transition: opacity 0.5s; opacity:0; border-radius: 50%;"
       onload="this.style.opacity=1;"
     />
@@ -12,27 +12,72 @@
       <ul class="list-unstyled">
         <li class="mb-3 fs-2">
           <strong>
-            {{user.name}}
+            {{userProfile.name}}
           </strong>
         </li>
         <li class="mb-5">
           <strong>
-            {{user.email}}
+            {{userProfile.email}}
           </strong>
         </li>
         <li class="mb-1">
           <p>
             <strong>
-              {{user.Comments.length}}
+              {{userProfile.Comments.length}}
             </strong>
             已評論餐廳數
+          </p>
+        </li>
+        <li class="mb-1">
+          <p>
+            <strong>
+              {{userProfile.FavoritedRestaurants.length}}
+            </strong>
+            已收藏餐廳數
+          </p>
+        </li>
+        <li class="mb-1">
+          <p>
+            <strong>
+              {{userProfile.Followings.length}}
+            </strong>
+            追蹤中的使用者
+          </p>
+        </li>
+        <li class="mb-1">
+          <p>
+            <strong>
+              {{userProfile.Followers.length}}
+            </strong>
+            追蹤者
           </p>
         </li>
       </ul>
     </div>
     <div class="d-flex">
-      {{#ifCond user.id user.id}}
-        <a class="btn btn-primary mx-1" href="/users/{{user.id}}/edit">
+      {{#if userProfile.isFollowed}}
+        <form
+          action="/following/{{userProfile.id}}?_method=DELETE"
+          method="POST"
+          style="display: contents;"
+        >
+          <button type="submit" class="btn btn-danger">
+            取消追蹤
+          </button>
+        </form>
+      {{else}}
+        <form
+          action="/following/{{userProfile.id}}"
+          method="POST"
+          style="display: contents;"
+        >
+          <button type="submit" class="btn btn-primary">
+            追蹤
+          </button>
+        </form>
+      {{/if}}
+      {{#ifCond userProfile.id user.id}}
+        <a class="btn btn-primary mx-1" href="/users/{{userProfile.id}}/edit">
           Edit
         </a>
       {{else}}
@@ -46,27 +91,105 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <h6 class="mb-3">
-    <strong>
-      已評論餐廳：
-    </strong>
-  </h6>
-  {{#each user.Comments}}
-    <div class="col-md-2">
-      <div class="card mb-4 shadow-sm">
-        <a href="/restaurants/{{this.Restaurant.id}}">
-          <img
-            class="card-img-top img-fluid"
-            src="{{this.Restaurant.image}}"
-            alt="Card image cap"
-            width="286px"
-            height="180px"
-            style="transition: opacity 0.5s; opacity:0;"
-            onload="this.style.opacity=1;"
-          />
-        </a>
-      </div>
+<div class="row mt-5">
+  <div class="col-md-4">
+    <div class="row">
+      <h6 class="mb-3">
+        <strong>
+          追蹤中的使用者：
+        </strong>
+      </h6>
+      {{#each userProfile.Followings}}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <a href="/users/{{this.id}}">
+              <img
+                class="card-img-top img-fluid"
+                src="{{this.image}}"
+                alt="Card image cap"
+                width="286px"
+                height="180px"
+                style="transition: opacity 0.5s; opacity:0;"
+                onload="this.style.opacity=1;"
+              />
+            </a>
+          </div>
+        </div>
+      {{/each}}
     </div>
-  {{/each}}
+    <div class="row">
+      <h6 class="mb-3">
+        <strong>
+          追蹤者：
+        </strong>
+      </h6>
+      {{#each userProfile.Followers}}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <a href="/users/{{this.id}}">
+              <img
+                class="card-img-top img-fluid"
+                src="{{this.image}}"
+                alt="Card image cap"
+                width="286px"
+                height="180px"
+                style="transition: opacity 0.5s; opacity:0;"
+                onload="this.style.opacity=1;"
+              />
+            </a>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="row">
+      <h6 class="mb-3">
+        <strong>
+          已評論餐廳：
+        </strong>
+      </h6>
+      {{#each userProfile.Comments}}
+        <div class="col-md-2">
+          <div class="card mb-4 shadow-sm">
+            <a href="/restaurants/{{this.Restaurant.id}}">
+              <img
+                class="card-img-top img-fluid"
+                src="{{this.Restaurant.image}}"
+                alt="Card image cap"
+                width="286px"
+                height="180px"
+                style="transition: opacity 0.5s; opacity:0;"
+                onload="this.style.opacity=1;"
+              />
+            </a>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <div class="row">
+      <h6 class="mb-3">
+        <strong>
+          已收藏餐廳：
+        </strong>
+      </h6>
+      {{#each userProfile.FavoritedRestaurants}}
+        <div class="col-md-2">
+          <div class="card mb-4 shadow-sm">
+            <a href="/restaurants/{{this.id}}">
+              <img
+                class="card-img-top img-fluid"
+                src="{{this.image}}"
+                alt="Card image cap"
+                width="286px"
+                height="180px"
+                style="transition: opacity 0.5s; opacity:0;"
+                onload="this.style.opacity=1;"
+              />
+            </a>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
 </div>
