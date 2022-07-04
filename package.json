@@ -7,7 +7,8 @@
 		"dev": "nodemon app.js",
 		"lint": "eslint \"**/*.js\" --fix",
 		"test": "mocha tests --exit --recursive --timeout 5000",
-		"resetdb": "npx sequelize db:seed:undo:all && npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
+		"resetdb": "npx sequelize db:seed:undo:all && npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all",
+		"resetherokudb": "heroku run npx sequelize db:seed:undo:all && heroku run npx sequelize db:migrate:undo:all && heroku run npx sequelize db:migrate && heroku run npx sequelize db:seed:all"
 	},
 	"repository": {
 		"type": "git",
