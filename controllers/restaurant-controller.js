@@ -92,7 +92,8 @@ const restaurantController = {
     try {
       let restaurants = await Restaurant.findAll({
         limit: 10,
-        include: [{ model: User, as: 'FavoritedUsers' }]
+        include: [{ model: User, as: 'FavoritedUsers' }],
+        order: [['favoriteCounts', 'DESC']]
       })
       const FavoritedRestaurants = req.user ? req.user.FavoritedRestaurants : []
       restaurants = await restaurants.map(restaurant => ({
